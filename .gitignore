@@ -1,0 +1,9 @@
+# Archivos compilados de Java
+*.class
+
+# Carpetas de compilación que crean algunos editores
+bin/
+out/
+
+# Configuración personal de VS Code
+.vscode/
