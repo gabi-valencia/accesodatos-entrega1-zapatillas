@@ -18,12 +18,11 @@ public class CrearFichero_GabrielValencia {
 
         // Creamos los arrays con la informacion de las zapatillas y sus variables:
         int codigos[] = { 1, 2, 3, 4, 5 };
-        String nombres[] = { "New Balance 740", "Adidas Campus", "Converse", "Air force 1", "Asic Gel" };
+        String nombres[] = { "New Balance 740", "Adidas Campus", "Converse Chuck 70", "Air Force 1", "Asics Gel-1130" };
         String marcas[] = { "New Balance", "Adidas", "Converse", "Nike", "Asics" };
-        float precios[] = { 119.99F, 99.99F, 79.99F, 119.99F, 129.99F }; // se pone la F al final para que se dectecte
-                                                                         // como un float
+        float precios[] = { 119.99F, 99.99F, 79.99F, 119.99F, 129.99F }; // la F del final indica que es float
         boolean enStock[] = { true, false, true, false, false };
-        String tiendas[] = { "Jd Sports", "Nike", "Foot Locker", "Sprinter", "Snipes" };
+        String tiendas[] = { "Jd Sports", "Adidas", "Foot Locker", "Sprinter", "Snipes" };
 
         // Iniciamos Fichero:
         String enlaceFichero = "InformacionZapatillas.dat";
@@ -53,12 +52,12 @@ public class CrearFichero_GabrielValencia {
             for (int i = 0; i < codigos.length; i++) {
                 raf.writeInt(codigos[i]); // Codigo
 
-                StringBuffer sbNombres = new StringBuffer(nombres[i]); //Nombre
+                StringBuffer sbNombres = new StringBuffer(nombres[i]); // Nombre
                 // La longitud debe ser 20 en los Strings:
-                sbNombres.setLength(20); //Longitud 20
+                sbNombres.setLength(20); // Longitud 20
                 raf.writeChars(sbNombres.toString());
 
-                StringBuffer sbMarcas = new StringBuffer(marcas[i]); //Marca
+                StringBuffer sbMarcas = new StringBuffer(marcas[i]); // Marca
                 sbMarcas.setLength(20);
                 raf.writeChars(sbMarcas.toString());
 
@@ -69,23 +68,24 @@ public class CrearFichero_GabrielValencia {
                 sbTiendas.setLength(20);
                 raf.writeChars(sbTiendas.toString());
 
-                //Para mostrar si tenemos la zapatilla o no en stock, debemos realizar un if que lo compruebe:
-                //Variable de texto que guarde nuestro resultado:
+                // Para mostrar si tenemos la zapatilla o no en stock, debemos realizar un if
+                // que lo compruebe:
+                // Variable de texto que guarde nuestro resultado:
                 boolean comprobarStock = enStock[i];
                 String guardarResultado = "";
 
-                if (comprobarStock == true ) {
-                   guardarResultado = "Si hay unidades";     
-                } else{
+                if (comprobarStock == true) {
+                    guardarResultado = "Si hay unidades";
+                } else {
                     guardarResultado = "No tenemos en stock";
                 }
 
-              System.out.println("Guardada -> Código: " + codigos[i]
-              + " | " + nombres[i]
-              + " | " + marcas[i]
-              + " | " + precios[i] + " euros"
-              + " | En stock: " + guardarResultado 
-              + " | " + tiendas[i]);
+                System.out.println("Guardada -> Código: " + codigos[i]
+                        + " | " + nombres[i]
+                        + " | " + marcas[i]
+                        + " | " + precios[i] + " euros"
+                        + " | En stock: " + guardarResultado
+                        + " | " + tiendas[i]);
             }
 
         } catch (FileNotFoundException e) {

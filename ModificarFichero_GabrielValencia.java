@@ -106,7 +106,7 @@ public class ModificarFichero_GabrielValencia {
             }
             String conversionTienda = new String(tienda).trim();
 
-            // ---------- MOSTRAR LA ZAPATILLA (ANTES) ----------
+            // ---------- MOSTRAR LA ZAPATILLA (ANTES) ----------2
             // Un println con todos los datos, como el de CrearFichero
             System.out.println("Datos actuales -> Código: " + leerCodigos
                     + " | " + conversionNombre
