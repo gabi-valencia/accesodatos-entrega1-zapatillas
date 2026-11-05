@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class ModificarFichero_GabrielValencia {
@@ -39,7 +42,6 @@ public class ModificarFichero_GabrielValencia {
         System.out.println("Introduce el codigo de la zapatilla: ");
         Scanner sc = new Scanner(System.in);
         int leerNumero = sc.nextInt();
-        System.out.println(leerNumero);
 
         // Debemos crear una variable donde guardemos cuantas zapatillas tenemos:
 
@@ -59,6 +61,65 @@ public class ModificarFichero_GabrielValencia {
         if (leerNumero < 1 || leerNumero > totalZapatillas) {
             System.out.println("No existe el codigo de zapatilla que estas buscando en nuestra informacion");
             return;
+        }
+        try (RandomAccessFile raf = new RandomAccessFile(f, "rw")) {
+
+            // ---------- SALTAR A LA ZAPATILLA ----------
+            // Calculo dónde empieza la zapatilla y salto a esa posición
+            int posicionZapatilla = (leerNumero - 1) * tamañoZapatilla;
+            raf.seek(posicionZapatilla);
+
+            // Leo los campos en el mismo orden en el que los guardé en CrearFichero
+
+            // ---------- CÓDIGO ----------
+            int leerCodigos = raf.readInt();
+
+            // ---------- NOMBRE ----------
+            // Leo las 20 letras una a una y las paso a texto, quitando los huecos del final
+            char nombre[] = new char[20];
+            for (int i = 0; i < nombre.length; i++) {
+                nombre[i] = raf.readChar();
+            }
+            String conversionNombre = new String(nombre).trim();
+
+            // ---------- MARCA ----------
+            // Igual que nombre array de 20, bucle y conversión
+            char marca[] = new char[20];
+            for (int i = 0; i < marca.length; i++) {
+                marca[i] = raf.readChar();
+            }
+            String conversionMarca = new String(marca).trim();
+
+            // ---------- PRECIO ----------
+            // Un float, como el código pero con su método de leer float
+            float leerPrecio = raf.readFloat();
+
+            // ---------- EN STOCK ----------
+            // Un boolean, con su método de leer boolean
+            boolean verStock = raf.readBoolean();
+
+            // ---------- TIENDA ----------
+            // Igual que el nombre y la marca
+            char tienda[] = new char[20];
+            for (int i = 0; i < tienda.length; i++) {
+                tienda[i] = raf.readChar();
+            }
+            String conversionTienda = new String(tienda).trim();
+
+            // ---------- MOSTRAR LA ZAPATILLA (ANTES) ----------
+            // Un println con todos los datos, como el de CrearFichero
+            System.out.println("Datos actuales -> Código: " + leerCodigos
+                    + " | " + conversionNombre
+                    + " | " + conversionMarca
+                    + " | " + leerPrecio + " euros"
+                    + " | En stock: " + verStock
+                    + " | " + conversionTienda);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("El fichero con el que se quiere trabajar no existe: " + e.getMessage());
+
+        } catch (IOException e) {
+            System.out.println("Error general de exception: " + e.getMessage());
         }
     }
 }
