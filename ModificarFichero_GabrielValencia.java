@@ -38,14 +38,26 @@ public class ModificarFichero_GabrielValencia {
             return;
         }
 
-        // Debemos pedir al usuario que nos introduzca el codigo de la zapatilla que
-        // quiere modificar:
-        System.out.println("Introduce el codigo de la zapatilla: ");
+        // Creo la variable fuera del try para poder usarla en el resto del programa
+        int leerNumero;
+
+        // El Scanner también va fuera, porque lo vuelvo a usar más abajo
+        // para pedir el precio y el stock
         Scanner sc = new Scanner(System.in);
-        int leerNumero = sc.nextInt();
 
-        // Debemos crear una variable donde guardemos cuantas zapatillas tenemos:
+        // Pido el código de la zapatilla que se quiere modificar.
+        // Lo meto en un try porque si el usuario escribe letras en vez de
+        // un número, el programa fallaría
 
+        try {
+            System.out.println("Introduce el codigo de la zapatilla: ");
+            leerNumero = sc.nextInt();
+
+        } catch (InputMismatchException e) {
+            // Si no ha escrito un número, aviso y salgo del programa
+            System.out.println("No has escrito el dato esperado. Debes escribir un numero");
+            return;
+        }
         // Lo que ocupa cada zapatilla en el fichero
         int tamañoZapatilla = 129;
 
@@ -121,20 +133,29 @@ public class ModificarFichero_GabrielValencia {
             // son datos fijos: Precio.
             System.out.println("¿Qué nuevo precio quieres ponerle al producto? (usa una coma(,)): ");
             float nuevoPrecio = sc.nextFloat();
-            System.out.println(nuevoPrecio);
 
             // Stock:
             System.out.println("¿Hay stock de esta zapatilla? (escribe true o false): ");
             boolean cambioStock = sc.nextBoolean();
-            System.out.println(cambioStock);
 
             // Tenemos que saltar directamente al dato que queremos modificar, en este caso
             // a precio
-            // Nuestro cursor se encuentra en la ultima posicion osea, en la tienda:
-            raf.seek(posicionZapatilla + 84); // --> ponemos 84 ya que antes de llegar a la zapatilla tenemos 84 bytes
+            // Nuestro cursor se encuentra en el final de la zapatilla:
+
+            raf.seek(posicionZapatilla + 84); // Dentro de cada zapatilla, el precio empieza en el byte 84
+            // (4 del código + 40 del nombre + 40 de la marca)
             // Escribimos los nuevos precios en nuestro fichero:
             raf.writeFloat(nuevoPrecio); // Lo escrito en el scanner se guarda
             raf.writeBoolean(cambioStock); // Lo escrito en el scanner se guarda
+
+            // ------------- MOSTRAR NUEVA INFORMACION -------------------
+            System.out.println("Datos nuevos -> Código: " + leerCodigos
+                    + " | " + conversionNombre
+                    + " | " + conversionMarca
+                    + " | " + nuevoPrecio + " euros"
+                    + " | En stock: " + cambioStock
+                    + " | " + conversionTienda);
+            sc.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("El fichero con el que se quiere trabajar no existe: " + e.getMessage());
