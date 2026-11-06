@@ -11,7 +11,7 @@ después se pasan a un fichero XML.
 
 ## Por qué he elegido este tema
 
-(Aquí va tu texto.)
+Poner mas adelante la explicacion (recordatorio)
 
 ## Datos de cada zapatilla
 
