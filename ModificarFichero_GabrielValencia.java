@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ModificarFichero_GabrielValencia {
@@ -106,7 +107,7 @@ public class ModificarFichero_GabrielValencia {
             }
             String conversionTienda = new String(tienda).trim();
 
-            // ---------- MOSTRAR LA ZAPATILLA (ANTES) ----------2
+            // ---------- MOSTRAR LA ZAPATILLA (ANTES DE LA MODIFICACION)----------
             // Un println con todos los datos, como el de CrearFichero
             System.out.println("Datos actuales -> Código: " + leerCodigos
                     + " | " + conversionNombre
@@ -115,8 +116,31 @@ public class ModificarFichero_GabrielValencia {
                     + " | En stock: " + verStock
                     + " | " + conversionTienda);
 
+            // ------------ SCANNER CON NUEVOS DATOS ---------------
+            // Los unicos datos que se pueden modificar es el precio y el stock, el resto
+            // son datos fijos: Precio.
+            System.out.println("¿Qué nuevo precio quieres ponerle al producto? (usa una coma(,)): ");
+            float nuevoPrecio = sc.nextFloat();
+            System.out.println(nuevoPrecio);
+
+            // Stock:
+            System.out.println("¿Hay stock de esta zapatilla? (escribe true o false): ");
+            boolean cambioStock = sc.nextBoolean();
+            System.out.println(cambioStock);
+
+            // Tenemos que saltar directamente al dato que queremos modificar, en este caso
+            // a precio
+            // Nuestro cursor se encuentra en la ultima posicion osea, en la tienda:
+            raf.seek(posicionZapatilla + 84); // --> ponemos 84 ya que antes de llegar a la zapatilla tenemos 84 bytes
+            // Escribimos los nuevos precios en nuestro fichero:
+            raf.writeFloat(nuevoPrecio); // Lo escrito en el scanner se guarda
+            raf.writeBoolean(cambioStock); // Lo escrito en el scanner se guarda
+
         } catch (FileNotFoundException e) {
             System.out.println("El fichero con el que se quiere trabajar no existe: " + e.getMessage());
+
+        } catch (InputMismatchException e) {
+            System.out.println("El dato que has introducido no es compatible, con la respuesta esperada");
 
         } catch (IOException e) {
             System.out.println("Error general de exception: " + e.getMessage());
