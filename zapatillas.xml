@@ -1,43 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <zapatillas>
-    <zapatilla>
-        <codigo>1</codigo>
-        <nombre>New Balance 740</nombre>
-        <marca>New Balance</marca>
-        <precio>119.99</precio>
-        <stock>true</stock>
-        <tienda>Jd Sports</tienda>
-    </zapatilla>
-    <zapatilla>
-        <codigo>2</codigo>
-        <nombre>Adidas Campus</nombre>
-        <marca>Adidas</marca>
-        <precio>99.99</precio>
-        <stock>false</stock>
-        <tienda>Adidas</tienda>
-    </zapatilla>
-    <zapatilla>
-        <codigo>3</codigo>
-        <nombre>Converse Chuck 70</nombre>
-        <marca>Converse</marca>
-        <precio>79.99</precio>
-        <stock>true</stock>
-        <tienda>Foot Locker</tienda>
-    </zapatilla>
-    <zapatilla>
-        <codigo>4</codigo>
-        <nombre>Air Force 1</nombre>
-        <marca>Nike</marca>
-        <precio>119.99</precio>
-        <stock>false</stock>
-        <tienda>Sprinter</tienda>
-    </zapatilla>
-    <zapatilla>
-        <codigo>5</codigo>
-        <nombre>Asics Gel-1130</nombre>
-        <marca>Asics</marca>
-        <precio>129.99</precio>
-        <stock>false</stock>
-        <tienda>Snipes</tienda>
-    </zapatilla>
+  <zapatilla>
+    <codigo>1</codigo>
+    <nombre>New Balance 740</nombre>
+    <marca>New Balance</marca>
+    <precio>119.99</precio>
+    <stock>true</stock>
+    <tienda>Jd Sports</tienda>
+  </zapatilla>
+  <zapatilla>
+    <codigo>2</codigo>
+    <nombre>Adidas Campus</nombre>
+    <marca>Adidas</marca>
+    <precio>99.99</precio>
+    <stock>false</stock>
+    <tienda>Adidas</tienda>
+  </zapatilla>
+  <zapatilla>
+    <codigo>3</codigo>
+    <nombre>Converse Chuck 70</nombre>
+    <marca>Converse</marca>
+    <precio>79.99</precio>
+    <stock>true</stock>
+    <tienda>Foot Locker</tienda>
+  </zapatilla>
+  <zapatilla>
+    <codigo>4</codigo>
+    <nombre>Air Force 1</nombre>
+    <marca>Nike</marca>
+    <precio>119.99</precio>
+    <stock>false</stock>
+    <tienda>Sprinter</tienda>
+  </zapatilla>
+  <zapatilla>
+    <codigo>5</codigo>
+    <nombre>Asics Gel-1130</nombre>
+    <marca>Asics</marca>
+    <precio>129.99</precio>
+    <stock>false</stock>
+    <tienda>Snipes</tienda>
+  </zapatilla>
 </zapatillas>

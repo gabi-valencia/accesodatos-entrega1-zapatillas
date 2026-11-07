@@ -1,26 +1,24 @@
-
-import java.io.BufferedReader;
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
-import org.w3c.dom.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class CrearFicheroXML_GabrielValencia {
     public static void main(String[] args) {
 
-        // Rutabilidad hacia el fichero .dat:
+        // Ruta hacia el fichero .dat:
         String fichero = "InformacionZapatillas.dat";
         File f = new File(fichero);
 
-        // Validaciones --> En este caso vamos a realizar validaciones de lectura
+        // Validaciones de lectura
         if (f.exists()) {
             if (f.isDirectory()) {
                 System.out.println("Estas tratando con un directorio y no con un fichero");
@@ -31,7 +29,7 @@ public class CrearFicheroXML_GabrielValencia {
                 return;
             }
             if (f.length() == 0) {
-                System.out.println("El fichero que intentar leer esta vacio");
+                System.out.println("El fichero que intentas leer esta vacio");
                 return;
             }
             System.out.println("El fichero existe y se trabajará con el");
@@ -42,22 +40,21 @@ public class CrearFicheroXML_GabrielValencia {
         }
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(f))) {
-            // Generamos la creacion del XML
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            DOMImplementation implementation = builder.getDOMImplementation();
-            Document document = (Document) implementation.createDocument(null, "zapatillas", null);
-            document.setXmlVersion("1.0"); // asignamos la version de nuestro XML
 
+            // Lista donde voy guardando las zapatillas que leo del .dat.
+            // Es como un array, pero crece sola y no hace falta decirle el tamaño
+            List<Zapatilla> zapatillas = new ArrayList<>();
+
+            // El while va dentro de su propio try porque es un bucle infinito que solo
+            // termina cuando se acaba el fichero y salta un EOFException.
+            // Así el error se queda aquí y el programa sigue hasta crear el XML
             try {
-                // El while va dentro de su propio try porque es un bucle infinito que solo
-                // termina cuando se acaba el fichero en ese momento salta un EOFException.
-                // Si el error lo cogiera el try de fuera, el programa saltaria directamente
-                // a los catch del final y nunca llegaría a guardar el XML
                 while (true) {
+
+                    // ---------- CÓDIGO ----------
                     int codigo = dis.readInt();
-                    // Tenemos que leer las zapatillas con todos sus datos asi que copiamos el
-                    // bloque de Modificar fichero, modificando unicamente la variable raf, por dis
+
+                    // ---------- NOMBRE ----------
                     char nombre[] = new char[20];
                     for (int i = 0; i < nombre.length; i++) {
                         nombre[i] = dis.readChar();
@@ -75,7 +72,6 @@ public class CrearFicheroXML_GabrielValencia {
                     float leerPrecio = dis.readFloat();
 
                     // ---------- EN STOCK ----------
-                    // Un boolean, con su método de leer boolean
                     boolean verStock = dis.readBoolean();
 
                     // ---------- TIENDA ----------
@@ -85,7 +81,7 @@ public class CrearFicheroXML_GabrielValencia {
                     }
                     String conversionTienda = new String(tienda).trim();
 
-                    // ---------- MOSTRAR LA ZAPATILLA----------
+                    // ---------- MOSTRAR LA ZAPATILLA ----------
                     System.out.println("Zapatilla -> Código: " + codigo
                             + " | " + conversionNombre
                             + " | " + conversionMarca
@@ -93,50 +89,36 @@ public class CrearFicheroXML_GabrielValencia {
                             + " | En stock: " + verStock
                             + " | " + conversionTienda);
 
-                    // ---------- METER LA ZAPATILLA EN EL XML ----------
-                    Element zapatilla = document.createElement("zapatilla");
-                    document.getDocumentElement().appendChild(zapatilla);
-                    CrearElemento("codigo", Integer.toString(codigo), zapatilla, document);
-                    CrearElemento("nombre", conversionNombre, zapatilla, document);
-                    CrearElemento("marca", conversionMarca, zapatilla, document);
-                    CrearElemento("precio", Float.toString(leerPrecio), zapatilla, document);
-                    CrearElemento("stock", Boolean.toString(verStock), zapatilla, document);
-                    CrearElemento("tienda", conversionTienda, zapatilla, document);
+                    // ---------- GUARDAR LA ZAPATILLA EN LA LISTA ----------
+                    // Con los datos leídos creo un objeto Zapatilla y lo añado a la lista
+                    zapatillas.add(new Zapatilla(codigo, conversionNombre, conversionMarca,
+                            leerPrecio, verStock, conversionTienda));
                 }
 
             } catch (EOFException e) { // End of File, salta cuando ya no quedan zapatillas
                 System.out.println("Se ha terminado de leer la informacion del fichero.");
             }
 
-            // ---------- GUARDAR EL XML ----------
-            Source source = new DOMSource(document);
-            Result result = new StreamResult(new File("zapatillas.xml"));
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            // para que no salga solo en una línea el xml sino que le de formato hay que
-            // poner:
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            // ---------- CREAR EL XML CON XSTREAM ----------
+            // DomDriver hace que el XML salga ordenado, con saltos de línea y sangría
+            XStream xstream = new XStream(new DomDriver());
 
-            transformer.transform(source, result);
+            // Los alias cambian el nombre de las etiquetas. Sin ellos, XStream pondría
+            // el nombre de las clases de Java (por ejemplo "list" o "Zapatilla")
+            xstream.alias("zapatillas", List.class);
+            xstream.alias("zapatilla", Zapatilla.class);
+
+            // XStream convierte la lista entera a XML y la guarda en el fichero.
+            // Las etiquetas de cada dato salen de los nombres de los atributos de Zapatilla
+            try (FileWriter fw = new FileWriter("zapatillas.xml")) {
+                xstream.toXML(zapatillas, fw);
+            }
             System.out.println("Fichero zapatillas.xml creado correctamente.");
 
         } catch (FileNotFoundException e) {
             System.out.println("No se ha podido leer el fichero");
         } catch (IOException e) {
             System.out.println("Error general de exception: " + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            System.out.println("Error al preparar el documento XML: " + e.getMessage());
-        } catch (TransformerException e) {
-            System.out.println("Error al guardar el fichero XML: " + e.getMessage());
         }
-    } // fin del main
-
-    // Vamos a crear un metodo aparte para poder añadir los elementos que queramos a
-    // nuestro XML y asi poder llamarlos y utilizarlos desde donde queramos:
-    static void CrearElemento(String nombreEtiqueta, String valor, Element raiz, Document document) {
-        Element elem = document.createElement(nombreEtiqueta); // creamos hijo
-        Text text = document.createTextNode(valor); // damos valor
-        raiz.appendChild(elem); // pegamos el elemento hijo a la raiz
-        elem.appendChild(text); // pegamos el valor
     }
 }
