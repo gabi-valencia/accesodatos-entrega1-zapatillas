@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -100,7 +99,7 @@ public class CrearFicheroXML_GabrielValencia {
             }
 
             // ---------- CREAR EL XML CON XSTREAM ----------
-            // DomDriver hace que el XML salga ordenado, con saltos de línea y sangría
+            // DomDriver hace que el XML salga ordenado con saltos de línea
             XStream xstream = new XStream(new DomDriver());
 
             // Los alias cambian el nombre de las etiquetas. Sin ellos, XStream pondría
@@ -108,8 +107,8 @@ public class CrearFicheroXML_GabrielValencia {
             xstream.alias("zapatillas", List.class);
             xstream.alias("zapatilla", Zapatilla.class);
 
-            // XStream convierte la lista entera a XML y la guarda en el fichero.
-            // Las etiquetas de cada dato salen de los nombres de los atributos de Zapatilla
+            // Los alias cambian el nombre de las etiquetas la lista se pone con List.class
+            // porque XStream trata cualquier ArrayList como un List
             try (FileWriter fw = new FileWriter("zapatillas.xml")) {
                 xstream.toXML(zapatillas, fw);
             }
