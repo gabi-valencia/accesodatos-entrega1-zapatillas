@@ -6,7 +6,7 @@
     <xsl:template match="zapatillas">
         <head><title>TIPOS DE ZAPATILLA</title></head>
         <body>
-            <h1>LISTA DE ZAPATILLAS</h1>
+            <h1>TABLA DE ZAPATILLAS</h1>
             <table border="1">
                <tr><th>Código</th><th>Nombre</th><th>Marca</th><th>Precio</th><th>Stock</th><th>Tienda</th></tr>
                 <xsl:apply-templates select="zapatilla" />
