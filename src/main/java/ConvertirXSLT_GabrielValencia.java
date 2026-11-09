@@ -10,7 +10,7 @@ public class ConvertirXSLT_GabrielValencia {
     public static void main(String[] args) {
 
         // Ruta para el xml
-        String rutaXML = "zapatillas.xml";
+        String rutaXML = "InformacionZapatillas.xml";
         File xml = new File(rutaXML);
 
         // Ruta para xsl

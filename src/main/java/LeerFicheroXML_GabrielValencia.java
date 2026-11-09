@@ -11,7 +11,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class LeerFicheroXML_GabrielValencia {
     public static void main(String[] args) {
         // Ruta hacia nuestro fichero de zapatillas:
-        String rutaZapatillas = "zapatillas.xml";
+        String rutaZapatillas = "InformacionZapatillas.xml";
         File f = new File(rutaZapatillas);
 
         // Validaciones --> En este caso vamos a realizar de lectura:

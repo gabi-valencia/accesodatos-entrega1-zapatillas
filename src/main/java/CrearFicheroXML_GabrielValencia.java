@@ -107,13 +107,11 @@ public class CrearFicheroXML_GabrielValencia {
             xstream.alias("zapatillas", List.class);
             xstream.alias("zapatilla", Zapatilla.class);
 
-            // Los alias cambian el nombre de las etiquetas la lista se pone con List.class
-            // porque XStream trata cualquier ArrayList como un List
-            try (FileWriter fw = new FileWriter("zapatillas.xml")) {
+            // Guardo la lista entera en el fichero XML
+            try (FileWriter fw = new FileWriter("InformacionZapatillas.xml")) {
                 xstream.toXML(zapatillas, fw);
             }
-            System.out.println("Fichero zapatillas.xml creado correctamente.");
-
+            System.out.println("Fichero InformacionZapatillas.xml creado correctamente.");
         } catch (FileNotFoundException e) {
             System.out.println("No se ha podido leer el fichero");
         } catch (IOException e) {
