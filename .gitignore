@@ -9,3 +9,5 @@ out/
 .vscode/
 # Carpeta donde Maven guarda lo compilado
 target/
+# Comprimidos de la entrega
+*.zip
