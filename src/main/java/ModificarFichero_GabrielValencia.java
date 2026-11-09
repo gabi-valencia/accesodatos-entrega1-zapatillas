@@ -51,7 +51,7 @@ public class ModificarFichero_GabrielValencia {
         // un número, el programa fallaría
 
         try {
-            System.out.println("Introduce el codigo de la zapatilla: ");
+            System.out.println("Introduce el codigo de la zapatilla (numero entre 1-5): ");
             leerNumero = sc.nextInt();
 
         } catch (InputMismatchException e) {
@@ -156,7 +156,6 @@ public class ModificarFichero_GabrielValencia {
                     + " | " + nuevoPrecio + " euros"
                     + " | En stock: " + cambioStock
                     + " | " + conversionTienda);
-            sc.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("El fichero con el que se quiere trabajar no existe: " + e.getMessage());
